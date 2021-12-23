@@ -10,3 +10,22 @@
     <%= link_to "削除", post_image_path(@post_image), method: :delete %><!-- 削除する -->
   <% end %><!-- 終わり -->
 </div>
+<div>
+  <p>コメント件数:<%= @post_image.post_comments.count %></p>
+  <%= @post_image.post_comments.each do |post_comment| %>
+    <p><%= image_tag('sample-author1.jpg') %></p>
+    <%= post_comment.user.name %>
+    <%= post_comment.created_at.strftime('%Y%m%d') %><%= post_comment.comment %>
+  <% end %>
+</div>
+
+<div>
+  <!-- コメントはpost_imageに結びついたpost_commentにあるため、２つ用意する必要がある -->
+  <!-- post_commentをcreateするためのリクエストは、ルーティング -->
+  <%= form_with(model:[@post_image,@post_comment],local: true) do |f| %>
+    <%= f.text_area :comment, rows:'5', placeholder:"コメントをここに" %>
+    <!-- rows:'5'　⇨　テキストエリアの高さを指定する　数字が多いほど高くなる -->
+    <!-- 入力欄にあらかじめ記入されている薄い灰色のテキストのこと -->
+    <%= f.submit "送信する" %>
+  <% end %>
+</div>
