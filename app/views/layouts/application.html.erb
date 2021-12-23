@@ -18,6 +18,10 @@
         <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
         <!-- method: :deleteでdestroy_user_session_pathへルーティングさせ、ログアウト処理を行う -->
       </li>
+      <li>
+        <%= link_to "マイページ", user_path(current_user.id) %>
+        <!-- 引数にcurrent_user.idを指定することで自分の詳細ページに飛ぶことができる-->
+      </li>
     <% else %>
       <li>
         <%= link_to "新規登録", new_user_registration_path %>

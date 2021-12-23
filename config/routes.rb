@@ -12,5 +12,6 @@ Rails.application.routes.draw do
     #コメントは投稿画像に対してコメントされる。→ post_commentsは、post_imagesに結びつく
     #このような親子関係を　ネストする　という
   end
+  resources :users, only: [:show, :edit, :update]
 
 end
