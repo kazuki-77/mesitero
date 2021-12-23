@@ -12,10 +12,29 @@
 </div>
 <div>
   <p>コメント件数:<%= @post_image.post_comments.count %></p>
-  <%= @post_image.post_comments.each do |post_comment| %>
+  <% @post_image.post_comments.each do |post_comment| %>
     <p><%= image_tag('sample-author1.jpg') %></p>
     <%= post_comment.user.name %>
-    <%= post_comment.created_at.strftime('%Y%m%d') %><%= post_comment.comment %>
+    <%= post_comment.created_at.strftime('%Y/%m/%d') %><%= post_comment.comment %>
+    <% if post_comment.user == current_user %><!-- もしコメントしたユーザーだったら、削除ボタンを表示する -->
+      <%= link_to "削除", post_image_post_comment_path(post_comment.post_image, post_comment), method: :delete %>
+      <!-- ↑↑ コメントの削除なのでpost_comment#deleteのルートを確認して、pathまで記述し、（）の中に投稿詳細への引数を記述する -->
+      <!-- ()の中が２つあるのは、ネストされているのでpost_comment.post_imageで投稿画像、post_commentでコメントをしていた投稿画像の先に飛ぶようにしている-->
+    <% end %>
+    <% if @post_image.favorited_by?(current_user) %>
+    <!-- ↑↑ 投稿画像に付けられた「いいね」に自分（ログインしているユーザー)が含まれているかどうか -->
+      <p>
+        <%= link_to post_image_favorites_path(@post_image), method: :delete do %><!--　含まれている場合 -->
+        ♥<%= @post_image.favorites.count %> いいね
+        <% end %>
+      </p>
+      <% else %>
+      <p>
+        <%= link_to post_image_favorites_path(@post_image), method: :post do %><!-- 含まれていない場合 -->
+        ♡<%= @post_image.favorites.count %> いいね
+        <% end %>
+      </p>
+    <% end %>
   <% end %>
 </div>
 
